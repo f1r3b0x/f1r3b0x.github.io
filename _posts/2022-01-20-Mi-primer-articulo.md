@@ -1,5 +1,5 @@
 ---
-title: Another Sample Page
+title: Mi primer artículo
 published: true
 ---
 
