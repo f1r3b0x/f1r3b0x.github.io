@@ -3,122 +3,56 @@ title: Mi primer artículo
 published: true
 ---
 
-Text can be **bold**, _italic_, ~~strikethrough~~ or `keyword`.
+## [](#header-1)Empezando por el principio
 
-[Link to another page](another-page).
+Pese a que ya tenía la idea de iniciarme en este campo metida en la cabeza desde 1º de bachillerato o quizá algo antes, no ha sido hasta 2º año de carrera que he decidio comenzar.
+Estoy estudiando ingeniería informática porque siempre me ha llamado la atención el mundo de los ordenadores.
+Bien, después de esta breve introdución a mi situación; comencemos por el principio.
 
-There should be whitespace between paragraphs.
+¿Qué hago? Pues a fecha del artículo, me abro una cuenta en la plataforma Hack The Box y me inicio probando a configurar a mi gusto algunas distribuciones de Linux en máquinas virutales.
+Después de probar Kali, Parrot y intentarlo con Black Arch, decido quedarme con la segunda como mi primera distro dirigida a pentesting.
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+Repasamos los cursos de inicio (en inglés) de HTB y con ello conceptos ya vistos en la carrera como la virtualización, los contenedores y algunos más. Ya que la idea general de esto es no dejarme cosas sin comentar, repasaré brevemente el contenido de los cursos que encuentre interesante (sin entrar mucho en detalles).
 
-# [](#header-1)Header 1
+El primer curso _Setting Up_ nos ayuda a configurar dos máquinas virtuales en VMware, una atacante de Linux (Parrot Sec en mi caso) y una de Windows 11 que según ellos servirá como campo de pruebas sobre el que realizar algún ataque y quizá de atacante en algún caso puntual.
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+Debido a que nuestro principal sistema será el Parrot OS, decido dedicar parte de mi tiempo libre antes de continuar a aprender sobre el sistema mientras lo personalizo, con ayuda de otros amables usuarios de la red; pues en este momento yo estoy mucho más familiarizado con Windows que con Linux en general, pese a que en algún momento me he dedicado a explorar distribuciones y he utilizado Ubuntu para alguna que otra tarea.
 
-## [](#header-2)Header 2
+Creo conveniente destacar que por el momento, mis conocimientos generales sobre Informática son los siguientes:
 
-> This is a blockquote following a header.
+> Nivel medio de C++
 >
-> When something is important enough, you do it even if the odds are not in your favor.
+> Nivel básico de Python y Shell Scripting
+>
+> Nivel básico de diseño de Bases de Datos y consultas SQL
+>
+> Nivel básico de R
+>
+> Conocimientos teóricos de Matemáticas, Electrónica, Estructura de Computadores, Sistemas Operativos, etc...
+>
+> Y alguna que otra cosa tratada por mi cuenta o en la carrera (conceptos de Ciberseguridad, Redes, ...)
 
-### [](#header-3)Header 3
+## [](#header-2)Primeros pasos
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
+Después de _Setting Up_, pasamos al primer curso que toca por encima la materia que nos interesa. _Infosec Overview_ es el primer vistazo que nos da la academia de HTB acerca de la Ciberseguridad.
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
+Se menciona que la seguridad de la información es un campo muy extenso que incluye muchos campos como, por ejemplo:
 
-#### [](#header-4)Header 4
+* Seguridad de infraestructuras y redes
+* Seguridad de aplicaciones
+* Auditorías de sistemas
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+Según la CIA nuestro trabajo consiste en "proteger la confidencialidad, integridad y disponibilidad de los datos".
+Para conseguir esto sin afectar a las operaciones y a la productividad de estas, se sigue el *Protocolo de Gestión de Riesgos*:
+1. Identificar el riesgo
+2. Analizar el riesgo
+3. Evaluar el riesgo
+4. Lidiar con el riesgo
+5. Monitorizar el riesgo
 
-##### [](#header-5)Header 5
+También se nos mencionan algunos términos relacionados con el tipo de rol desarrollado por los trabajadores de _infosec_, como Equipo Rojo (atacantes) y Equipo Azul (defensores).
+El equipo rojo debe tratar de romper los sistemas para encontrar vulnerabilidades mediante _penetration testing_, ingeniería social y otras técnicas. Mientras que, el equipo azul, debe reforzar las defensas de la organización a través de análisis, políticas y herramientas de seguridad.
 
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
+Entrando más en materia, se nos habla de los _Penetration Testers_. También llamdos Consultores de Seguridad, su función es encontrar los riesgos en las redes interas y externas de las organizaciones. Sus funciones una vez encontrada la forma de romper los sistemas pueden variar, pero principalmente informan de como reparar las vulnerabilidades o ayudan a repararlas.
 
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
-```
+Nosotros utilizaremos los cursos, retos y desafíos de la plataforma _Hack The Box_ para aprender todo lo posible sobre la materia, con el objetivo de convertirnos en _Pen Testers_ profesionales. Pues mediante trabajo duro, constancia, ganas de aprender y la ayuda de Internet con plataformas como HTB, Youtube, Twitch, diversas páignas de cursos, documentación oficial, foros, la base dada en estudios superiores y más, podemos llegar a aprender todo lo necesario para ser expertos en la materia y, de ser necesario, obtener certificaciones que así lo acrediten. 

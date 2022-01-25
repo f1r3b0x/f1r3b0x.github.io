@@ -1,0 +1,51 @@
+I"�<h2 id="una-distro-de-pentesting"><a href="#header-1"></a>Una distro de <em>pentesting</em></h2>
+
+<p>Uno de los requisitos para empezar como consultores de seguridad es saber configurar, mantener y asegurar máquinas atacantes (tanto con sistemas Linux como Windows), por lo que a ello vamos. Empezaremos eligiendo una distribución Linux. Como somos principiantes, elegiremos una distro enfocada al <em>pentesting</em> con diversas herramientas ya precargadas. Antes de investigar, yo sólo conocía Kali Linux. Pero tras investigar un poco, he descubierto otras posibilidades como <em>Parrot Security OS</em> o <em>BlackArch</em> y al no tener claro cual instalar me he decantado por Parrot, pues es la que utilizan en HTB y al echar un ojo en Internet he visto personalizaciones que han llamado mi atención.</p>
+
+<p>Una vez decidido, debemos tener en cuenta que lo más óptimo para evitar problemas cuando cometamos un error es realizar nuestra instalación en una máquina virtual.
+Por mi parte he tenido algo de suerte, ya que estaba familiarizado de antes con las máquinas virtuales y su instalación. Aunque para probar algo nuevo he decidido usar un <em>software</em> distinto para mi como es VMware (en lugar de VirtualBOX).</p>
+
+<p>Continuando con el curso, se nos habla de la importancia de una buena organización para maximizar la productividad y no perder información. Esto se consigue a través de organización en nuestro sistema de carpetas y mediante la toma de notas/apuntes (función principal de este blog).</p>
+
+<p>También se nos recomienda aprender lenguaje de marcado, que nosotros aprenderemos al ir publicando artículos y mejorarlos en esta web.</p>
+
+<h2 id="virtual-private-networks-vpns"><a href="#header-2"></a><em>Virtual Private Networks</em> (VPNs)</h2>
+
+<p>Las VPNs nos permiten crear un canal seguro de comunicaciones, cambiando nuestra dirección IP pública y encriptando las comunicaciones a través del canal creado. Además de permitirnos acceder a los equipos y recursos de una red interna.</p>
+
+<p><img src="https://academy.hackthebox.com/storage/modules/77/GettingStarted.png" alt="Imagen VPNs _Hack The Box_" /></p>
+
+<p>Mirándolo por encima podríamos decir que, lo que hace una VPN, es enrutar la conexión de nuestro dispositivo a través del servidor privado elegido en lugar de a nuestr proveedor de servicios de internet (ISP). Es por esto que nuestra IP pública pasa a originarse del servidor VPN.</p>
+
+<p>Principalmente, hay dos tipos de acceso remoto por VPN:</p>
+<ul>
+  <li>VPN basada en cliente: requiere el uso de software cliente para establecer la conexión.</li>
+  <li>VPN SSL: utiliza el navegador web como el cliente VPN, por lo que la conexión se establece entre el navegador y una puerta VPN SSL configurable (para limitar el acceso).</li>
+</ul>
+
+<p>En el caso de ser empleados de una empresa, nuestro ordenador podrá disponer de los mismos recursos que si estuviéramos en el trabajo o de una parte limitada para trabajos remotos.</p>
+
+<h3 id="utilidad-de-una-vpn"><a href="#header-3"></a>Utilidad de una VPN</h3>
+
+<p>Una conexión a un servidor VPN nos puede ser útil para:</p>
+<ul>
+  <li>Conectarnos a un servidor en otro lugar de nuestro país</li>
+  <li>Conectarnos a un servidor en otro país</li>
+  <li>Ocultar nuestra IP pública</li>
+  <li>Rebasar algunas restricciones de red o cortafuegos al conectar a una posible red hostil</li>
+</ul>
+
+<p>Si bien es cierto que el uso de una VPN aumenta nuestra privacidad y seguridad, no es infalible; ya el proveedor del servicio VPN puede controlar los datos o estar incumpliendo prácticas de seguridad. Por lo tanto, <strong>jamás</strong> debemos pensar que utilizar este servicio oculta totalmente nuestra actividad y nos hace anónimos.</p>
+
+<h2 id="vpn-de-htb"><a href="#header-4"></a>VPN de HTB</h2>
+
+<p>Los servicios como <em>Hack The Box</em>, que ofrecen máquinas vulnerables para practicar, suelen requerir que los jugadores se conecten a la red objetivo mediante una VPN para acceder
+al laboratorio privado. Al conectarnos a esta VPN, siempre debemos considerar la red como “hostil”. Debido a esto, se recomienda conectar siempre desde una máquina virtual
+que no disponga de información comprometedora, bloquear cualquier servidor web y no permitir la autenticación por contraseña si SSH está activado en nuestra máquina atacante.</p>
+
+<p>Al conectarnos a nuestra VPN de HTB utilizamos el siguiente comando en nuestra terminal: <code class="language-plaintext highlighter-rouge">sudo openvpn usuario.ovpn</code>. Siendo <code class="language-plaintext highlighter-rouge">sudo</code> el comando para elevar la petición al usuario <em>root</em>,
+<code class="language-plaintext highlighter-rouge">openvpn</code> el cliente de la VPN y <code class="language-plaintext highlighter-rouge">user.ovpn</code> nuestro archivo de clave VPN descargado desde la página de HTB.</p>
+
+<p>Mediante otra terminal, pues deberemos dejar esa trabajando en el proceso, podemos usar el comando <code class="language-plaintext highlighter-rouge">ifconfig</code> para ver información (IP, máscara de red, etc.) sobre nuestra conexión
+en “tunX:”. Además con <code class="language-plaintext highlighter-rouge">netstat -rn</code> podremos ver las redes accesibles mediante la VPN.</p>
+:ET
