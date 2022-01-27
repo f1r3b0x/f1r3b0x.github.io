@@ -1,11 +1,9 @@
 ---
-title: Parte 1 - Pestesting basics
+title: Terminología común
 published: true
 ---
 
-## [](#header-1)Terminología más común
-
-Básicamente nos hablan de lo básico para guiarnos en nuestros primeros pasos por _Hack The Box_.
+En este apartado del curso se nos muestra la terminología más importante para iniciarnos en el campo, como veremos a continuación.
 
 ### [](#header-2)¿Qué es un _Shell_/Terminal?
 

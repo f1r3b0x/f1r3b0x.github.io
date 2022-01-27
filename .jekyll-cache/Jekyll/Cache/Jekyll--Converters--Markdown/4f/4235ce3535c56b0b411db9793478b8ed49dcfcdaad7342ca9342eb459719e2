@@ -1,6 +1,4 @@
-I"#<h2 id="escaneo-de-servicios"><a href="#header-1"></a>Escaneo de servicios</h2>
-
-<p>Lo primero que debemos hacer al explorar una máquina es identificar el sistema operativo y cualquier servicio disponible que pueda estar ejecutándose. Un servicio es una aplicación 
+I"�"<p>Lo primero que debemos hacer al explorar una máquina es identificar el sistema operativo y cualquier servicio disponible que pueda estar ejecutándose. Un servicio es una aplicación 
 ejecutando en un ordenador que realiza funciones útiles para otros ordenadores. Las máquinas especializadadas en ejecutar servicios se conocen como “servidores”.<br />
 En lugar de realizar las acciones esperadas de ese servicio, a nosotros nos interesa obligar al servicio a hacer algo que nos ayude (como ejecutar un comando).</p>
 
@@ -58,11 +56,14 @@ ataque potencial. <code class="language-plaintext highlighter-rouge">Nmap</code>
 
 <p>SMB permite a los usuarios y administradores compartir carpetas y hacerlas accesibles remotamente para otros usuarios. A menudo esas carpetas contienen información sensible. 
 Una herramienta que enumera e interactúa con lo compartido por SMB es <code class="language-plaintext highlighter-rouge">smbclient</code>. Con el parámetro -L, especificamos que queremos una lista de lo compartido y disponible en el 
-anfitrión remoto. Y con -N suprimimos la solicitud de contraseña: <code class="language-plaintext highlighter-rouge">smbclient -N -L \\\\&lt;dirección_IP&gt;</code></p>
+anfitrión remoto. Y con -N suprimimos la solicitud de contraseña: 
+<code class="language-plaintext highlighter-rouge">smbclient -N -L \\\\&lt;dirección_IP&gt;</code></p>
 
-<p>Luego, podemos intentar conectarnos <code class="language-plaintext highlighter-rouge">smbclient \\\\&lt;dirección_ip&gt;\\&lt;nombre_compartición&gt;</code>. Es común probar como invitado (<em>guest</em>) si no disponemos de credenciales o, en caso 
-contrario, con <code class="language-plaintext highlighter-rouge">smbclient -U &lt;usuario&gt; \\\\&lt;dirección_ip&gt;\\&lt;nombre_compartición&gt;</code>. Una vez dentro, al igual que con FTP, podemos usar comandos como <code class="language-plaintext highlighter-rouge">cd</code>, <code class="language-plaintext highlighter-rouge">ls</code> o <code class="language-plaintext highlighter-rouge">get</code> para movernos y
-descargar archivos.</p>
+<p>Luego, podemos intentar conectarnos:<br />
+<code class="language-plaintext highlighter-rouge">smbclient \\\\&lt;dirección_ip&gt;\\&lt;nombre_compartición&gt;</code><br />
+Es común probar como invitado (<em>guest</em>) si no disponemos de credenciales o, en caso contrario, con:<br />
+<code class="language-plaintext highlighter-rouge">smbclient -U &lt;usuario&gt; \\\\&lt;dirección_ip&gt;\\&lt;nombre_compartición&gt;</code><br />
+Una vez dentro, al igual que con FTP, podemos usar comandos como <code class="language-plaintext highlighter-rouge">cd</code>, <code class="language-plaintext highlighter-rouge">ls</code> o <code class="language-plaintext highlighter-rouge">get</code> para movernos y descargar archivos.</p>
 
 <h3 id="snmp"><a href="#header-8"></a>SNMP</h3>
 

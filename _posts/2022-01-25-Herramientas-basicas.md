@@ -1,7 +1,10 @@
 ---
-title: Parte 2 - Pentesting basics
+title: Herramientas básicas
 published: true
 ---
+
+Como podremos ver a continuación, he decidido explicar en este artículo el concepto de servidor _web_. Pienso que es interesante tenerlo presente para clarificar las funciones de
+alguna de las herramientas explicadas más adelante.
 
 ### [](#header-1)¿Qué es un servidor _web_?
 

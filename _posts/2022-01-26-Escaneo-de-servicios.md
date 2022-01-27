@@ -1,9 +1,7 @@
 ---
-title: Parte 3 - Pentesting basics
+title: Escaneo de Servicios
 published: true
 ---
-
-## [](#header-1)Escaneo de servicios
 
 Lo primero que debemos hacer al explorar una máquina es identificar el sistema operativo y cualquier servicio disponible que pueda estar ejecutándose. Un servicio es una aplicación 
 ejecutando en un ordenador que realiza funciones útiles para otros ordenadores. Las máquinas especializadadas en ejecutar servicios se conocen como "servidores".  
@@ -63,11 +61,14 @@ El marco de trabajo _Metasploit_ tiene diversos módulos para validar y explotar
 
 SMB permite a los usuarios y administradores compartir carpetas y hacerlas accesibles remotamente para otros usuarios. A menudo esas carpetas contienen información sensible. 
 Una herramienta que enumera e interactúa con lo compartido por SMB es `smbclient`. Con el parámetro -L, especificamos que queremos una lista de lo compartido y disponible en el 
-anfitrión remoto. Y con -N suprimimos la solicitud de contraseña: `smbclient -N -L \\\\<dirección_IP>`
+anfitrión remoto. Y con -N suprimimos la solicitud de contraseña: 
+`smbclient -N -L \\\\<dirección_IP>`
 
-Luego, podemos intentar conectarnos `smbclient \\\\<dirección_ip>\\<nombre_compartición>`. Es común probar como invitado (_guest_) si no disponemos de credenciales o, en caso 
-contrario, con `smbclient -U <usuario> \\\\<dirección_ip>\\<nombre_compartición>`. Una vez dentro, al igual que con FTP, podemos usar comandos como `cd`, `ls` o `get` para movernos y
-descargar archivos.
+Luego, podemos intentar conectarnos:  
+`smbclient \\\\<dirección_ip>\\<nombre_compartición>`  
+Es común probar como invitado (_guest_) si no disponemos de credenciales o, en caso contrario, con:  
+`smbclient -U <usuario> \\\\<dirección_ip>\\<nombre_compartición>`  
+Una vez dentro, al igual que con FTP, podemos usar comandos como `cd`, `ls` o `get` para movernos y descargar archivos.
 
 ### [](#header-8)SNMP
 
