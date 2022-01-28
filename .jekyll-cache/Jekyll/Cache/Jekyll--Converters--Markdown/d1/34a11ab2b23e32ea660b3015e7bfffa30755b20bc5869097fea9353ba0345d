@@ -1,0 +1,39 @@
+I"7<p>Una vez identificados los servicios que ejecutan en los puertos identificados en nuestro escaneo, el primer paso es mirar si alguno de los servicios tiene algún <em>exploit</em> público,
+entendiendo por <em>exploit</em> cualquier posibilidad de abuso de una vulnerabilidad, como un fragmento de código o un ataque de ingeniería social.</p>
+
+<h3 id="encontrando-exploits-públicos"><a href="#header-1"></a>Encontrando <em>Exploits</em> Públicos</h3>
+
+<p>Hay diversas herramientas para encontrar los <em>exploits</em> públicos de las aplicaiones y servicios que nos vamos encontrando. Entre ellas tenemos:</p>
+<ul>
+  <li>Google: tan simple como útil; buscando el nombre del servicio seguido de <code class="language-plaintext highlighter-rouge">exploit</code> en google podemos encontrar lo que necesitamos</li>
+  <li>Searchsploit: <code class="language-plaintext highlighter-rouge">searchsploit &lt;servicio&gt; &lt;versión&gt;</code></li>
+  <li>Exploit DB</li>
+  <li>Rapid7 DB</li>
+  <li>Vulnerability Lab</li>
+</ul>
+
+<p>El módulo <em>Intro to Web Applications</em> profundiza en este asunto.</p>
+
+<h3 id="metasploit-primer"><a href="#header-2"></a>Metasploit Primer</h3>
+
+<p>El marco de trabajo Metasploit (MSF) es una gran herramienta para los <em>pentesters</em>, ya que contiene muchos <em>exploits</em> para vulnerabilidades públicas y permite utilizarlos de
+manera fácil contra objetivos vulnerables. Además cuenta con las siguientes funciones:</p>
+<ul>
+  <li>Lanzar <em>scripts</em> de reconocimiento para enumerar anfitriones remotos y objetivos comprometidos</li>
+  <li><em>Scripts</em> de verificación para comprobar la existencia de vulnerabilidades sin comprometer el objetivo</li>
+  <li>Una herramienta para conectar terminales y correr comandos en los objetivos comprometidos llamada Meterpreter</li>
+  <li>Muchas herramientas pivotantes y post-explotación</li>
+</ul>
+
+<p>Uso de Metasploit:<br />
+<code class="language-plaintext highlighter-rouge">msfconsole</code><br />
+<code class="language-plaintext highlighter-rouge">search exploit &lt;vulnerabilidad&gt;</code><br />
+Cuando encontramos un exploit lo usamos copiando el nombre completo:<br />
+<code class="language-plaintext highlighter-rouge">use &lt;nombre_completo&gt;</code><br />
+Antes de lanzar el <em>exploit</em> debemos configurar sus opciones, que para ver:<br />
+<code class="language-plaintext highlighter-rouge">show options</code><br />
+Cualquier opción con el campo <code class="language-plaintext highlighter-rouge">Required</code> en <code class="language-plaintext highlighter-rouge">yes</code> necesita establecerse para el <em>exploit</em>:<br />
+<code class="language-plaintext highlighter-rouge">set &lt;tipo_de_opción&gt; &lt;opción&gt;</code><br />
+Antes de proseguir podemos realizar un <code class="language-plaintext highlighter-rouge">check</code></p>
+
+:ET

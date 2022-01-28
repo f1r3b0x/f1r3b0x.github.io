@@ -1,6 +1,0 @@
-I"�<p>Al escanear los servicios, es común ver servidores <em>web</em> ejecutando en los puertos 80 y 443. Como ya mencionamos anteriormente, las aplicaciones web que corren en estos servidores
-suelen ser objetivos interesantes al realizar un <em>pentest</em>. Por lo que veremos que la enumeración <em>web</em> es clave, sobre todo si no hay muchos servicios expuestos o están
-bien parcheados.</p>
-
-<p>##</p>
-:ET

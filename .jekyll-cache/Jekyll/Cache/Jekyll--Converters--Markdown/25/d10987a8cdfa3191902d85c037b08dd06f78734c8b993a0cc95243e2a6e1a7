@@ -1,0 +1,12 @@
+I"�<p>Una vez identificados los servicios que ejecutan en los puertos identificados en nuestro escaneo, el primer paso es mirar si alguno de los servicios tiene algún <em>exploit</em> público,
+entendiendo por <em>exploit</em> cualquier posibilidad de abuso de una vulnerabilidad, como un fragmento de código o un ataque de ingeniería social.</p>
+
+<h3 id="encontrando-exploits-públicos"><a href="#header-1"></a>Encontrando <em>Exploits</em> Públicos</h3>
+
+<p>Hay diversas herramientas para encontrar los <em>exploits</em> públicos de las aplicaiones y servicios que nos vamos encontrando. Entre ellas tenemos:</p>
+<ul>
+  <li>Google: tan simple como útil; buscando el nombre del servicio seguido de <code class="language-plaintext highlighter-rouge">exploit</code> en google podemos encontrar lo que necesitamos</li>
+  <li>Searchsploit: <code class="language-plaintext highlighter-rouge">searchsploit &lt;servicio&gt; &lt;versión&gt;</code></li>
+</ul>
+
+:ET
