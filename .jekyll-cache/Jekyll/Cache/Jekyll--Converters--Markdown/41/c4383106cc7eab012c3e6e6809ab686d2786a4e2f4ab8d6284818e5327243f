@@ -1,0 +1,4 @@
+I"�<p>Al comprometer un sistema y explotar una vulnerabilidad para ejecutar comandos de forma remota en los objetivos comprometidos, necesitamos un método de comunicación con el sistema; de
+forma que no tengamos que “reexplotar” la misma vulnerabilidad cada vez que queramos ejecutar un comando. Por lo tanto, precisamos de una conexión fiable y directa al terminal del
+sistema.</p>
+:ET

@@ -1,0 +1,4 @@
+I"l<p>Al acceder a un servidor remoto lo normal es que sea como usuarios no privilegiados, lo que no nos brinda acceso completo a la máquina. Para conseguir el acceso completo, necesitamos
+encontrar una vulnerabilidad interna que nos permita escalar nuestros privilegios al usuario <code class="language-plaintext highlighter-rouge">root</code> en <code class="language-plaintext highlighter-rouge">Linux</code> o el <code class="language-plaintext highlighter-rouge">administrador/SYSTEM</code> en <code class="language-plaintext highlighter-rouge">Windows</code>.<br />
+Veamos algunos métodos comunes para hacerlo.</p>
+:ET

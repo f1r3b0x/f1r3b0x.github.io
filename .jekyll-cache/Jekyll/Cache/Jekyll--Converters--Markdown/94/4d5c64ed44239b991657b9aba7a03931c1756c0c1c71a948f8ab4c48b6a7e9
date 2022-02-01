@@ -1,0 +1,86 @@
+I"�<p>Al acceder a un servidor remoto lo normal es que sea como usuarios no privilegiados, lo que no nos brinda acceso completo a la máquina. Para conseguir el acceso completo, necesitamos
+encontrar una vulnerabilidad interna que nos permita escalar nuestros privilegios al usuario <code class="language-plaintext highlighter-rouge">root</code> en <code class="language-plaintext highlighter-rouge">Linux</code> o el <code class="language-plaintext highlighter-rouge">administrador/SYSTEM</code> en <code class="language-plaintext highlighter-rouge">Windows</code>.<br />
+Veamos algunos métodos comunes para hacerlo.</p>
+
+<h3 id="chuletas-privesc"><a href="#header-1"></a>Chuletas PrivEsc</h3>
+
+<p>Podemos encontrar instrucciones y chuletas en línea que tienen una colección de instrucciones que podemos seguir y los comandos para seguirlas. Algunos recursos interesantes son
+“HackTricks” y “PayloadsAllTheThings”. Lo mejor que podemos hacer es experimentar con estas técnicas para escalar nuestros privilegios.</p>
+
+<h3 id="scripts-de-enumeración"><a href="#header-2"></a><em>Scripts</em> de enumeración</h3>
+
+<p>Muchos de los comandos mencionados se pueden lanzar automáticamente con un <em>script</em> para buscar vulnerabilidades. Algunos de los <em>scripts</em> de enumeración para Linux incluyen
+“LinEnum” y “linuxprivchecker”, y para Windows incluyen “Seatbelt” y “JAWS”.</p>
+
+<p>Otra herramienta para esto es la “Privilege Escalation Awesome SUITE (PEASS)”, que se mantiene al día en cuanto a <em>scripts</em> para enumeración en Linux y Windows.</p>
+
+<p><strong>Importante:</strong> algunos de estos <em>scripts</em> pueden hacer mucho “ruido” que puede llamar la atención del anti-virus o del <em>software</em> de seguridad que monitoriza este tipo de eventos.
+Por lo que en ocasiones, nos puede interesar realizar la enumeración de forma manual.</p>
+
+<h3 id="exploits-del-núcleo-kernel"><a href="#header-3"></a><em>Exploits</em> del Núcleo (<em>Kernel</em>)</h3>
+
+<p>Cuando encontramos un servidor que usa un sistema operativo antiguo, debemos buscar las vulnerabilidades pontenciales del <em>kernel</em>. Si el servidor no se mantiene con las últimas
+actualizaciones y parches, es probable que sea vulnerable a <em>exploits</em> específicos del <em>kernel</em> encontrados en versiones no parcheadas de Linux y Windows.</p>
+
+<p>Podemos buscar en Google o usar <code class="language-plaintext highlighter-rouge">searchsploit</code> la versión del núcleo, como por ejemplo el <code class="language-plaintext highlighter-rouge">DirtyCow</code> en Linux 3.9.0-73-generic.</p>
+
+<p>Esto funciona de la misma forma en Windows. Además, es importante tener en cuenta que los <em>exploits</em> del núcleo pueden causar inestabilidad en el sistema, por lo que es importante
+tener cuidado si los usamos en sistemas en producción. Lo mejor es probarlos en entornos controlados como laboratiorios, y ejecutarlos únicamente en sistemas en producción con
+la aprovación explícita de nuestro cliente.</p>
+
+<h3 id="software-vulnerable"><a href="#header-4"></a>Software Vulnerable</h3>
+
+<p>Otra cosa a mirar es el software instalado. En Linux podemos verlo con el comando <code class="language-plaintext highlighter-rouge">dpkg -l</code> o mirar en <code class="language-plaintext highlighter-rouge">C:\Program Files</code> en Windows para ver el software instalado. Luego debemos
+buscar <em>exploits</em> públicos para cualquier sistema instalado, sobre todo si hay versiones antiguas en uso.</p>
+
+<h3 id="privilegios-de-usuario"><a href="#header-5"></a>Privilegios de Usuario</h3>
+
+<p>Otro aspecto crítico que mirar después de ganar acceso a un servidor son los privilegios de que dispone el usuario al que tenemos acceso. Suponinedo que tengamos permitido lanzar
+comandos específicos como <em>root</em> (o otro usuario). En ese caso, quizá podamos escalar nuestros privilegios a usuarios <em>root/system</em> o ganar acceso como otro usuario. Algunas maneras
+típcas de explotar algunos privilegios de usuario son:</p>
+<ol>
+  <li>Sudo</li>
+  <li>SUID</li>
+  <li>Windows Token Privileges</li>
+</ol>
+
+<p>El comando <code class="language-plaintext highlighter-rouge">sudo</code> de Linux permite a un usuario ejecutar comandos como si fuera otro. En ocasiones se permite a usuarios no privilegiados ejecutar comandos como <em>root</em> sin darles
+acceso al usuario <em>root</em>. Normalmente se hace para lanzar comandos específicos que sólo se puden lanzar como <em>root</em> (como <code class="language-plaintext highlighter-rouge">tcpdump</code>) o permitir al usuario acceder a ciertos
+directorios raíz. Podemos mirar los privilegios que nos da <code class="language-plaintext highlighter-rouge">sudo</code> con <code class="language-plaintext highlighter-rouge">sudo -l</code>.<br />
+Con <code class="language-plaintext highlighter-rouge">sudo su -</code> podemos cambiar al usuario <em>root</em>.<br />
+Si al hacer <code class="language-plaintext highlighter-rouge">sudo -l</code> vemos una entrada con <code class="language-plaintext highlighter-rouge">NOPASSWD</code>, significa que podemos ejecutar ese comando sin contraseña con <code class="language-plaintext highlighter-rouge">sudo -u &lt;usuario&gt; /bin/echo Hello World!</code>.</p>
+
+<p>Al encontrar una aplicación particular que podamos lanzar con <code class="language-plaintext highlighter-rouge">sudo</code>, miraremos formas de explotarla para ganar un intérprete como <em>root</em>. Páginas como “GTFOBins” o “LOLBAS” pueden
+ayudarnos con esta tarea.</p>
+
+<h3 id="tareas-programadas"><a href="#header-6"></a>Tareas Programadas</h3>
+
+<p>Tanto en Linux como en Windows hay métodos para tener <em>scripts</em> corriendo, en intérvalos de tiempo específicos, para llevar a cabo una tarea. Por ejemplo tener un antivirus
+realizando un escaneo cada hora. Suele haber 2 maneras de utilizar las tareas programadas (Windows) o trabajos crónicos (Linux) para escalar nuestros privilegios:</p>
+<ol>
+  <li>Añadir nuevas tareas programadas/trabajos crónicos</li>
+  <li>Trucarlas para ejecutar software malicioso</li>
+</ol>
+
+<p>La forma más sencilla es comprobar si tenemos permitido añadir tareas programadas nuevas. En Linux, una forma de mantener tareas programadas es mediante <code class="language-plaintext highlighter-rouge">Cron Jobs</code>. Hay directorios
+específicos que quizá podemos usar para añadir nuevos trabajos crónicos si tenemos permisos de escritura sobre ellos. Se incluyen:</p>
+<ol>
+  <li>/etc/crontab</li>
+  <li>/etc/cron.d</li>
+  <li>/var/spool/cron/crontabs/root</li>
+</ol>
+
+<p>Si podemos escribir en un directorio llamado por un trabajo crónico, escribiremos un <em>bash script</em> con un intérprete de comandos inverso, cuyo trabajo será enviarnos una terminal al
+ser ejecutado.</p>
+
+<h3 id="credenciales-expuestas"><a href="#header-7"></a>Credenciales Expuestas</h3>
+
+<p>El siguiente paso será buscar archivos y mirar si contienen credenciales expuestas. Es muy común que las haya en archivos de configuración, archivos de registro y archivos de
+historial de usuarios (<code class="language-plaintext highlighter-rouge">bash_history</code> –&gt; Linux y <code class="language-plaintext highlighter-rouge">PSReadLine</code> –&gt; Windows). Los <em>scripts</em> de enumeración mencionados anteriormente suelen buscar contraseñas potenciales en los
+archivos por nosotros.</p>
+
+<p>Al encontrar una contraseña deberemos utilizarla para iniciar sesión en el servicio correspondiente y contemplar la posibilidad de que el usuario haya reutilizado la misma
+credencial como contraseña de <em>root</em>.<br />
+También podemos usar las credenciales para iniciar sesión por <code class="language-plaintext highlighter-rouge">ssh</code> en el servidor como ese usuario.</p>
+
+:ET
