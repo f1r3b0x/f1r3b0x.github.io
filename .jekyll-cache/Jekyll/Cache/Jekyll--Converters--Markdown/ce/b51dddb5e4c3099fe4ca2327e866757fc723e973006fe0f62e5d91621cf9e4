@@ -1,0 +1,4 @@
+I"�<p>Es habitual que, durante un ejercico de <em>pentesting</em>, necesitemos transferir archivos al servidor remoto; como <em>scripts</em> de enumeración, <em>exploits</em> o transferir datos a nuestra
+máquina de ataque. Si bien algunas herramientas como Metasploit nos permiten usar el comando <code class="language-plaintext highlighter-rouge">Upload</code> para subir un fichero, debemos aprender métodos para transferirlos desde un
+intérprete inverso estándar.</p>
+:ET

