@@ -43,8 +43,8 @@ o `nmap -sV --script=banner -p21 <dirección_ip>/<puerto>`
 
 #### [](#header-5)FTP
 
-Este servicio suele contener información interesante. Un escaneo `Nmap` del puerto 21 (FTP) puede revelar la versión instalada de "vsftpd" y además nos dice que la autenticación
-anónima está activada y que un directorio `pub`.  
+Este servicio llamado _File Transfer Protocol_ o Protocolo de Transferencia de archivos, suele contener información interesante. Un escaneo `Nmap` del puerto 21 (FTP)
+puede revelar la versión instalada de "vsftpd" y además nos dice que la autenticación anónima está activada y que un directorio `pub`.  
 Una vez escaneado podemos conectarnos al servicio mediante `ftp -p <dirección_ip>` .
 
 FTP nos permite usar comandos comunes como `cd` y `ls` y nos permite descargar archivos usando el comando `get`. Podemos inspeccionar lo descargado con `cat`.

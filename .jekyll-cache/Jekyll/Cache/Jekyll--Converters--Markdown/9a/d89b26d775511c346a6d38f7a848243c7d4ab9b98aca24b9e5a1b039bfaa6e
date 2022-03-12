@@ -1,0 +1,77 @@
+I"�<p>Hoy empezaremos con la teoría de otro módulo de <em>Hack The Box</em>, introducción a redes.<br />
+Una red permite a dos ordenadores comunicarse entre ellos. Hay un gran número de topologías (de árbol, en estrella, etc.), medios (ethernet, fibra, coaxial, sin cable, etc.) y 
+protocolos (TCP, UDP, IPX, etc.) que se utilizan para proporcionar la red.<br />
+Para ser un buen profesional de seguridad es importante comprender el funcionamiento de las redes para, por ejemplo, poder entender lo que sucede cuando fallan.</p>
+
+<p>Si bien construir una única red gigante no es difícil; no es demasiado interesante, pues obligar a pivotar a los atacantes por muchas redes pequeñas interconectadas mientras 
+intentan pasar desapercibidos los ralentiza mucho más. Veamos algunos ejemplos:</p>
+
+<h5 id="ejemplo-1"><a href="#header-1"></a>Ejemplo 1</h5>
+
+<p>Crear redes pequeñas con Listas de Control de Acceso a su alrededor es como poner una valla alrededor de una propiedad. Si alguien salta la valla, resultará mucho más sospechoso
+que si no hubiera valla. ¿Por qué la red de la impresora se está comunicando con servidores a través de HTTP?</p>
+
+<h5 id="ejemplo-2"><a href="#header-2"></a>Ejemplo 2</h5>
+
+<p>Tomarse el tiempo para documentar y mapear el propósito de cada red es como poner luces alrededor de la propiedad, nos aseguramos de que toda actividad sea vista. ¿Por qué la red
+de la impresora se comunica con internet?</p>
+
+<h5 id="ejemplo-3"><a href="#header-3"></a>Ejemplo 3</h5>
+
+<p>Si ponemos arbustos debajo de la ventana, reduciremos las posibilidades de que alguien quiera abrirla. De la misma forma los Sistemas de Detección de Intrusiones como <code class="language-plaintext highlighter-rouge">Suricata</code> o 
+<code class="language-plaintext highlighter-rouge">Snort</code> hacen que un atacante se lo piense dos veces antes de escanear la red. ¿Por qué se ha realizado un escaneo de puertos desde la red de la impresora?</p>
+
+<h3 id="contando-una-historia-de-pentesters"><a href="#header-4"></a>Contando una historia de Pentesters</h3>
+
+<p>Es muy común que las redes usen una subred /24, por lo que muchos Pentesters establecen su máscara de red como 255.255.255.0 sin hacer comprovaciones. Las /24 permiten a los nodos 
+comunicarse con aquellos que tengan los primeros 3 octetos de su dirección IP iguales (ej.: 192.168.1.xxx). Configurar la submáscara de red como /25 dividirá ese rango de
+comunicación a la mitad. Ha habido casos en que el consultor ha pensado que un Controlador de Dominio no estaba en línea cuando en realidad estaba en otra subred. La estructura era:</p>
+<ul>
+  <li>Puerta de enlace del servidor: 10.20.0.1/25</li>
+  <li>Controlador de dominio: 10.20.0.10/25</li>
+  <li>Puerta de enlace del cliente: 10.20.0.129/25</li>
+  <li>Dirección IP del Pentester: 10.20.0.252/24 (Configuró la puerta de enlace a 10.20.0.1)</li>
+</ul>
+
+<p>Pese a tener una contraseña robada con <code class="language-plaintext highlighter-rouge">Impacket</code>, no consiguieron salir de la red de clientes para llegar a objetivos más valiosos. Esto se debe a que no entendieron la red.</p>
+
+<p>Al finalizar este módulo podremos comprender a la perfección esta historia, así que sigamos.</p>
+
+<h3 id="información-básica"><a href="#header-5"></a>Información básica</h3>
+
+<p><img src="https://academy.hackthebox.com/storage/modules/34/redesigned/net_overview.png" alt="Diagrama de alto nivel trabajo desde casa _Hack The Box_" /></p>
+
+<p>Todo Internet se basa en redes subdivididas, como la “Home Network” y “Company Network”.<br />
+Un buen símil del funcionamiento de la red es la entrega de mensajería o paquetes, enviados por un ordenador y recibidos por otro.</p>
+
+<p>Al intercambiar datos con un ordenador, debemos saber la dirección a la que deberían ir los paquetes. La dirección del sitio web o <em>Uniform Resource Locator</em> (URL) que entramos en 
+nuestro navegador también se conoce como <em>Fully Qualified Domain Name</em> (FQDN). Pero tienen una diferencia:</p>
+<ul>
+  <li>Una FQDN como <code class="language-plaintext highlighter-rouge">www.hackthebox.eu</code> sólo especifica la dirección del “edificio”.</li>
+  <li>Una URL como <code class="language-plaintext highlighter-rouge">https://hackthebox.eu/example?floor=2&amp;office=dev&amp;employee=17</code> también especifica la “planta”, “oficina” y “empleado” a quién se dirige el paquete.</li>
+</ul>
+
+<p>Al enviar el paquete a través de nuestra oficina de correo (<code class="language-plaintext highlighter-rouge">router</code>), el paquete se envía a la oficina de correo central (<code class="language-plaintext highlighter-rouge">ISP</code>). Allí miran el registro de direcciones (<code class="language-plaintext highlighter-rouge">Domain Name
+Service</code>) en que se encuentra la dirección del paquete, y devuelven las coordenadas geográficas (<code class="language-plaintext highlighter-rouge">dirección IP</code>) para poder dirigir el paquete a su destino.</p>
+
+<p>Una vez que el servidor <em>web</em> ha recibido nuestro paquete con la petición para ver su sitio <em>web</em>, el servidor nos reenvía el paquete con los datos para la presentación del
+sitio a través del <code class="language-plaintext highlighter-rouge">router</code> de la “Red de la Compañía” a nuestra <code class="language-plaintext highlighter-rouge">dirección IP</code>.</p>
+
+<h3 id="puntos-extra"><a href="#header-6"></a>Puntos extra</h3>
+
+<p>Lo esperable es que la red de la compañía del diagrama consista de 5 redes separadas:</p>
+<ol>
+  <li>El servidor <em>web</em> debe estar en una Zona Desmilitarizada (DMZ) ya que los clientes pueden iniciar comunicaciones con el servidor, haciéndolo más sencillo de comprometer.<br />
+Ponerlo en una red separada permite a los administradores poner proteciones de red entre el servidor <em>web</em> y otros dispositivos.</li>
+  <li>Las estaciones de trabajo deberían tener su propia red, y en un mundo perfecto, cada estación debería tener una regla basada en anfitrión en el cortafuegos, para 
+prevenir que hable con otras estaciones. Ataques como el <code class="language-plaintext highlighter-rouge">spoofing</code> o el <code class="language-plaintext highlighter-rouge">man in the middle (MITM)</code> pueden ser un grave problema si la estación se encuentra en la misma red que
+un servidor.</li>
+  <li>El <em>switch</em> y el <em>router</em> deben estar en una “Red de Administración”. Esto previene que las estaciones capturen el tráfico de red entre esos dispositivos. Si vemos la 
+advertencia <code class="language-plaintext highlighter-rouge">OSPF</code> (<em>Open Shortest Path First</em>), puede significar que el <em>router</em> no tiene una red de confianza; por lo que cualquiera en la red interna podría enviar una
+advertencia maliciosa y realizar un ataque <code class="language-plaintext highlighter-rouge">MITM</code>.</li>
+  <li>Los teléfonos IP también deberían disponer de una red propia. Esto se hace para prevenir que los ordenadores pueden pinchar las llamadas.</li>
+  <li>Las impresoras deben tener su propia red. Es casi imposible segurizar una impresora. Debido a cómo funciona Windows, si una impresora requiere de autenticación durante una
+impresión, el computador intentará una autenticación <code class="language-plaintext highlighter-rouge">NTLMv2</code>, que puede llevar al robo de credenciales. Además, las impresoras son buenas para persistir y, comúnmente, se les
+envía mucha información sensible.</li>
+</ol>
+:ET

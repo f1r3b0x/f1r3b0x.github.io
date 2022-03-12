@@ -1,0 +1,13 @@
+I"<p>Cada red está estructurada de forma diferente y se puede construir de forma individual. Debido a esto, se han desarrollado tipologías y topologías para clasificarlas. Ya que
+raramente oímos algunos de los siguientes términos en la practica, veremos términos comunes y “de libro”.</p>
+
+<h4 id="terminología-común"><a href="#header-1"></a>Terminología común</h4>
+
+<ul>
+  <li>Wide Area Network (WAN) ————&gt; Internet</li>
+  <li>Local Area Network (LAN) ———–&gt; Redes Internas (Ej.: Casa/Oficina)</li>
+  <li>Wireless Local Area Network (WLAN) -&gt; Redes Internas accesibles mediante Wi-Fi</li>
+  <li>Virtual Private Network (VPN) ——&gt; Conecta múltiples sitios de la red a una <code class="language-plaintext highlighter-rouge">LAN</code></li>
+</ul>
+
+:ET

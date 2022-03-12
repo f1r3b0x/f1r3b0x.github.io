@@ -1,0 +1,5 @@
+I"<p>Hoy empezaremos con la teoría de otro módulo de <em>Hack The Box</em>, introducción a redes.<br />
+Una red permite a dos ordenadores comunicarse entre ellos. Hay un gran número de topologías (de árbol, en estrella, etc.), medios (ethernet, fibra, coaxial, sin cable, etc.) y 
+protocolos (TCP, UDP, IPX, etc.) que se utilizan para proporcionar la red.<br />
+Para ser un buen profesional de seguridad es importante comprender el funcionamiento de las redes para, por ejemplo, poder entender lo que sucede cuando fallan.</p>
+:ET

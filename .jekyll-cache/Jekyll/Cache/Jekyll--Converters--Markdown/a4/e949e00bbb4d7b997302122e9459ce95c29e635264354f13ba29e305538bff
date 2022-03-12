@@ -1,4 +1,4 @@
-I"�"<p>Lo primero que debemos hacer al explorar una máquina es identificar el sistema operativo y cualquier servicio disponible que pueda estar ejecutándose. Un servicio es una aplicación 
+I".#<p>Lo primero que debemos hacer al explorar una máquina es identificar el sistema operativo y cualquier servicio disponible que pueda estar ejecutándose. Un servicio es una aplicación 
 ejecutando en un ordenador que realiza funciones útiles para otros ordenadores. Las máquinas especializadadas en ejecutar servicios se conocen como “servidores”.<br />
 En lugar de realizar las acciones esperadas de ese servicio, a nosotros nos interesa obligar al servicio a hacer algo que nos ayude (como ejecutar un comando).</p>
 
@@ -38,8 +38,8 @@ o <code class="language-plaintext highlighter-rouge">nmap -sV --script=banner -p
 
 <h4 id="ftp"><a href="#header-5"></a>FTP</h4>
 
-<p>Este servicio suele contener información interesante. Un escaneo <code class="language-plaintext highlighter-rouge">Nmap</code> del puerto 21 (FTP) puede revelar la versión instalada de “vsftpd” y además nos dice que la autenticación
-anónima está activada y que un directorio <code class="language-plaintext highlighter-rouge">pub</code>.<br />
+<p>Este servicio llamado <em>File Transfer Protocol</em> o Protocolo de Transferencia de archivos, suele contener información interesante. Un escaneo <code class="language-plaintext highlighter-rouge">Nmap</code> del puerto 21 (FTP)
+puede revelar la versión instalada de “vsftpd” y además nos dice que la autenticación anónima está activada y que un directorio <code class="language-plaintext highlighter-rouge">pub</code>.<br />
 Una vez escaneado podemos conectarnos al servicio mediante <code class="language-plaintext highlighter-rouge">ftp -p &lt;dirección_ip&gt;</code> .</p>
 
 <p>FTP nos permite usar comandos comunes como <code class="language-plaintext highlighter-rouge">cd</code> y <code class="language-plaintext highlighter-rouge">ls</code> y nos permite descargar archivos usando el comando <code class="language-plaintext highlighter-rouge">get</code>. Podemos inspeccionar lo descargado con <code class="language-plaintext highlighter-rouge">cat</code>.</p>
